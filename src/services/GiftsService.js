@@ -9,10 +9,10 @@ import { AppState } from "../AppState.js"
 
 class GiftsService {
     async createGift(giftData) {
-        const res = await sandboxApi.post('api/gifts', { params: giftData })
-        AppState.gifts.tag = giftData.tag
-        AppState.gifts.url = giftData.url
-        AppState.gifts = res.data.results.map(c => new Gift(c))
+        const res = await sandboxApi.post('api/gifts', giftData)
+        // AppState.gifts.tag = giftData.tag
+        // AppState.gifts.url = giftData.url
+        // AppState.gifts = res.data.results.map(c => new Gift(c))
         // AppState.gifts.push(res.data)
     }
 
