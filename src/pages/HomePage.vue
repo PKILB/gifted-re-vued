@@ -1,21 +1,67 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img
-        src="https://bcw.blob.core.windows.net/public/img/8600856373152463"
-        alt="CodeWorks Logo"
-        class="rounded-circle"
-      >
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+   <div class="container-fluid h-80">
+    <div class="row">
+      <div class="col-4 bg-success">
+        <form>
+          <h1>Gifted</h1>
+          <input required type="text" class="form-control my-3" placeholder=""
+              aria-label="Search gifts" aria-describedby="button-addon2">
+
+          <input required type="text" class="form-control my-3" placeholder=""
+              aria-label="Search gifts" aria-describedby="button-addon2">
+
+              <div class="row">
+                <div class="col-10 d-flex justify-content-center align-items-center">
+                  <input required type="text" class="form-control my-3" placeholder="Search gifts"
+                  aria-label="Search gifts" aria-describedby="button-addon2">
+                </div>
+                <div class="col-2 d-flex justify-content-center align-items-center">
+                      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+                        <i class="mdi mdi-magnify"></i>
+                      </button>
+                </div>
+              </div>
+        </form>
+      </div>
+      <div class="col-8">
+        <div class="row">
+          <div class="col-4">
+            <div class="card">
+              <img src="https://via.placeholder.com/250" alt="">
+              <div class="card-body text-center">
+                <p>Yoooo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { onMounted } from 'vue';
+import { giftsService } from '../services/GiftsService.js'
+import { logger } from '../utils/Logger.js';
+import Pop from '../utils/Pop.js';
+
 export default {
   setup() {
+
+    async function getGifts() {
+      try {
+        await giftsService.getGifts()
+      } catch (error) {
+        Pop.error(error.message)
+        logger.error(error)
+      }
+    }
+
+    onMounted(() => {
+      logger.log("Heyyy")
+      getGifts()
+    })
+
     return {}
   }
 }
@@ -31,6 +77,10 @@ export default {
 
   .home-card {
     width: 50vw;
+
+    .border-top {
+      border-top: 2px solid white;
+    }
 
     >img {
       height: 200px;
