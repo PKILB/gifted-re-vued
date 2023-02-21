@@ -4,12 +4,15 @@
       <div class="col-4 bg-success">
         <form>
           <h1>Gifted</h1>
-          <input required type="text" class="form-control my-3" placeholder=""
+          <input v-model="editable.url" required type="text" class="form-control my-3" placeholder=""
               aria-label="Search gifts" aria-describedby="button-addon2">
 
-          <input required type="text" class="form-control my-3" placeholder=""
+          <input v-model="editable.tag" required type="text" class="form-control my-3" placeholder=""
               aria-label="Search gifts" aria-describedby="button-addon2">
-
+              <button @click="createGift" class="btn btn-outline-secondary" type="onclick" id="button-addon2">
+                SUBMIT
+              </button>
+              </form>
               <div class="row">
                 <div class="col-10 d-flex justify-content-center align-items-center">
                   <input required type="text" class="form-control my-3" placeholder="Search gifts"
@@ -21,7 +24,6 @@
                       </button>
                 </div>
               </div>
-        </form>
       </div>
       <div class="col-8">
         <div class="row">
@@ -35,7 +37,7 @@
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import { giftsService } from '../services/GiftsService.js'
 import { logger } from '../utils/Logger.js';
@@ -44,7 +46,7 @@ import GiftCard from '../components/GiftCard.vue'
 
 export default {
   setup() {
-
+    const editable = ref({})
     async function getGifts() {
       try {
         await giftsService.getGifts()
@@ -54,13 +56,28 @@ export default {
       }
     }
 
+   
+
     onMounted(() => {
       logger.log("Heyyy")
       getGifts()
+      
     })
 
     return {
-      gifts: computed(() => AppState.gifts)
+      editable,
+      gifts: computed(() => AppState.gifts),
+      
+      async createGift() {
+      try {
+        let giftData = editable.value
+        await giftsService.createGift(giftData)
+        editable.value = {}
+      } catch (error) {
+        Pop.error(error.message)
+        logger.error(error)
+      }
+    }
     }
   },
   components: {GiftCard}
