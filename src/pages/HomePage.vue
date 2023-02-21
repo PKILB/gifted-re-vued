@@ -25,13 +25,8 @@
       </div>
       <div class="col-8">
         <div class="row">
-          <div class="col-4">
-            <div class="card">
-              <img src="https://via.placeholder.com/250" alt="">
-              <div class="card-body text-center">
-                <p>Yoooo</p>
-              </div>
-            </div>
+          <div v-for="giftFromTheVFor in gifts" class="col-4">
+            <GiftCard :gift="giftFromTheVFor" />
           </div>
         </div>
       </div>
@@ -40,10 +35,12 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
+import { AppState } from '../AppState.js';
 import { giftsService } from '../services/GiftsService.js'
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
+import GiftCard from '../components/GiftCard.vue'
 
 export default {
   setup() {
@@ -62,8 +59,11 @@ export default {
       getGifts()
     })
 
-    return {}
-  }
+    return {
+      gifts: computed(() => AppState.gifts)
+    }
+  },
+  components: {GiftCard}
 }
 </script>
 
